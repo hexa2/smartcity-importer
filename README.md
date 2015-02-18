@@ -1,5 +1,7 @@
 # smartcity-importer
 
+[![Circle CI](https://circleci.com/gh/hexa2/smartcity-importer.svg?style=svg)](https://circleci.com/gh/hexa2/smartcity-importer)
+
 FIXME: description
 
 ## Installation
