@@ -3,13 +3,13 @@
   (:require [capacitor.core :as influx]))
 
 (defn last-timestamp
-  "Gets the last timestamp registered in the database or a nil object if the database is empty."
+  "Gets the last timestamp registered in the table or a nil object if the table is empty."
   [influx-client table]
   (:time
     (first
       (influx/get-query influx-client
                         (str
-                          "SELECT time FROM " table " "
+                          "SELECT * FROM " table " "
                           "LIMIT 1")))))
 
 
