@@ -1,6 +1,7 @@
 (ns smartcity-importer.jobs
   (:require [org.httpkit.client :as http]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [capacitor.core :as influx]))
 
 (defn get-raw-values
   "Get values directly from the smart-city system"
@@ -19,20 +20,25 @@
                 (map #(identity {:k %1 :v %2}) fields values)))
       values-list)))
 
-(def get-map-vec (comp raw-to-map-vec get-raw-values))
+(defn convert-dates
+  "Convert string dates to Java dates"
+  [date-key map-vec]
+  (map #(assoc % date-key
+               (.parse
+                 (java.text.SimpleDateFormat. "yyyy-MM-dd kk:mm:ss")
+                 (get % date-key)))
+       map-vec))
 
 (defn filter-dates
   "Filter last update dates"
   [date-key last-update map-vec]
-  (filter
-    (fn [values]
-      (let [date (.parse
-                    (java.text.SimpleDateFormat. "dd.MM.yyyy HH.mm.ss")
-                    (get values date-key))]
-        (.after date last-update)))
-    map-vec))
+  (filter #(.after (get % date-key last-update)) map-vec))
 
-
-(defn fetch-data
-  [ctx]
-  (println "bob"))
+(defn pull-and-push
+  "Pull data from smartcity and send it to InfluxDB"
+  [i-client src-path dest-table]
+  (influx/post-points i-client dest-table
+    (-> (get-raw-values src-path)
+        raw-to-map-vec
+        convert-dates
+        filter-dates)))

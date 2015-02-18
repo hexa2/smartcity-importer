@@ -9,7 +9,7 @@
 
 (defjob FetchDataJob
   [ctx]
-  (jobs/fetch-data ctx))
+  (comment "NOOP"))
 
 (defn -main
   "Schedule and start the fetch data job"
