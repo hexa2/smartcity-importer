@@ -7,6 +7,7 @@
                  [clojurewerkz/quartzite "2.0.0"]
                  [capacitor "0.4.2"]
                  [http-kit "2.1.16"]
+                 [clj-time "0.9.0"]
                  [org.clojure/data.json "0.2.5"]]
   :main ^:skip-aot smartcity-importer.core
   :target-path "target/%s"
