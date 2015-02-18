@@ -1,7 +1,25 @@
 (ns smartcity-importer.core
-  (:gen-class))
+  (:gen-class)
+  (:require [clojurewerkz.quartzite.scheduler :as qs]
+            [clojurewerkz.quartzite.jobs :as j]
+            [clojurewerkz.quartzite.triggers :as t]
+            [clojurewerkz.quartzite.jobs :refer [defjob]]
+            [clojurewerkz.quartzite.schedule.calendar-interval :refer [schedule with-interval-in-minutes]]))
+
+(defjob FetchDataJob
+  [ctx]
+  (println "bob"))
 
 (defn -main
-  "I don't do a whole lot ... yet."
+  "Schedule and start the fetch data job"
   [& args]
-  (println "Hello, World!"))
+  (let [s (-> (qs/initialize) qs/start)
+        job (j/build
+              (j/of-type FetchDataJob)
+              (j/with-identity (j/key "jobs.fetch-data.1")))
+        trigger (t/build
+                  (t/with-identity (t/key "triggers.1"))
+                  (t/start-now)
+                  (t/with-schedule (schedule
+                                     (with-interval-in-minutes 1))))]
+    (qs/schedule s job trigger)))
