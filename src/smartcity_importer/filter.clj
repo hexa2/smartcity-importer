@@ -3,9 +3,8 @@
 
 (defn greater-times
   "Filter values with greater times than the reference"
-  [values reference & {:keys [time-field]
-                       :or [time-field :time]}]
-  (filter #(> (get % time-field) reference) values))
+  [values reference]
+  (filter #(> (get % :time 0) reference) values))
 
 (defn select-fields
   "Select fields for each value"
