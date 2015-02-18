@@ -4,11 +4,12 @@
             [clojurewerkz.quartzite.jobs :as j]
             [clojurewerkz.quartzite.triggers :as t]
             [clojurewerkz.quartzite.jobs :refer [defjob]]
-            [clojurewerkz.quartzite.schedule.calendar-interval :refer [schedule with-interval-in-minutes]]))
+            [clojurewerkz.quartzite.schedule.calendar-interval :refer [schedule with-interval-in-minutes]]
+            [smartcity-importer.jobs :as jobs]))
 
 (defjob FetchDataJob
   [ctx]
-  (println "bob"))
+  (jobs/fetch-data ctx))
 
 (defn -main
   "Schedule and start the fetch data job"
