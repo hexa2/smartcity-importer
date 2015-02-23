@@ -18,5 +18,6 @@
         [:number
          :time
          :available_bike_stands
-         :available_bikes]))
+         :available_bikes])
+      (comment "Let's assert in Influx now, but the dataset is changing ..."))
     (influx/delete-db client)))
