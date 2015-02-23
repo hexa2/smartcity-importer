@@ -3,4 +3,7 @@ dependencies:
     - wget https://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb
     - sudo dpkg -i influxdb_latest_amd64.deb
     - sudo /etc/init.d/influxdb start
-    - while ! nc -vz localhost:8086; do sleep 1; done
+    - while ! nc -vz localhost 8086; do sleep 1; done
+notify:
+  webhooks:
+    - url: https://hooks.slack.com/services/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
