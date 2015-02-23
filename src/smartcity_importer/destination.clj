@@ -18,10 +18,6 @@
 (defn write-new-points
   "Write only recent data to InfluxDB"
   [influx-client table points]
-  (println (last-timestamp influx-client table) "+++++"
-   (f/greater-times
-    points (last-timestamp influx-client table)))
-  (try (influx/post-points influx-client table "ms"
-    (vec (f/greater-times points
-                          (last-timestamp influx-client table))))
-    (catch Exception e (println  (.getMessage e)))))
+  (let [last-ts (last-timestamp influx-client table)
+        values (f/greater-times points last-ts)]
+    (influx/post-points influx-client table "ms" values)))
