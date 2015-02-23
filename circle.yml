@@ -2,7 +2,8 @@ dependencies:
   pre:
     - wget https://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb
     - sudo dpkg -i influxdb_latest_amd64.deb
-    - sudo /etc/init.d/influxdb start
+    - sudo influxdb -config="/opt/influxdb/shared/config.toml":
+        background: true
     - while ! nc -vz localhost 8086; do sleep 1; done
 notify:
   webhooks:
